@@ -12,9 +12,6 @@ int main(int argc, char *argv[]) {
     bmp_load(&bmp, argv[1]);
     bmp_g(&bmp,3);
     bmpSave(&bmp,"b.bmp");
-
-
-
     return 0;
 }
 

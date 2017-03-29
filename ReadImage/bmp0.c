@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <inttypes.h>
+#include <assert.h>
 
 typedef long UINT32;
 typedef unsigned short int UINT16;
