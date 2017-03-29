@@ -26,6 +26,8 @@ bmp2gray: bmp2gray.o ${OBJECTS}
 
 fliter: fliter.o ${OBJECTS}
 	$(CC) -o $@ fliter.o ${OBJECTS}
+bmp_sobel: bmp_sobel.o ${OBJECTS}
+	$(CC) -o $@ bmp_sobel.o ${OBJECTS}
 
 .PHONY: clean
 clean:

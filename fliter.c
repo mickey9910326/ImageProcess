@@ -1,6 +1,7 @@
 #include "lib\bmp.h"
 
 void bmp_g(BMP *bmp,int a);
+void th(BMP* bmp,float t);
 
 Pixel* get_pixel_at(BMP* bmp,uint32_t x,uint32_t y);
 float mean_RGB(Pixel* p);
@@ -16,10 +17,13 @@ int main(int argc, char *argv[]) {
     float sharpen[9] ={ -1/9.,-1/9.,-1/9.,-1/9.,1.-1/9.,-1/9.,-1/9.,-1/9.,-1/9. };
     float mean[9] ={ 1/9.,1/9.,1/9.,1/9.,-1.+1/9.,1/9.,1/9.,1/9.,1/9. };
     bmp_load(&bmp, argv[1]);
-    filter_3x3_mean(&bmp,mean);
+    filter_3x3_mean(&bmp,sharpen);
     bmpSave(&bmp,"t1.bmp");
+    filter_3x3_mean(&bmp,mean);
     filter_3x3_mean(&bmp,sharpen);
     bmpSave(&bmp,"t2.bmp");
+    th(&bmp,40);
+    bmpSave(&bmp,"t3.bmp");
     return 0;
 }
 
@@ -46,6 +50,24 @@ void filter_3x3_mean(BMP* bmp,float* filter) {
             data += filter[7]*mean_RGB(get_pixel_at(bmp,x  ,y+1));
             data += filter[8]*mean_RGB(get_pixel_at(bmp,x+1,y+1));
             pixel_put(get_pixel_at(bmp,x,y),data);
+		}
+	}
+}
+
+void th(BMP* bmp,float t) {
+	uint32_t width  = bmp->infoheader.width;
+	uint32_t height = bmp->infoheader.height;
+
+	uint32_t x,y;
+    float data = 0;
+	for (x = 0; x < width; x++) {
+		for (y = 0; y < height; y++) {
+            Pixel* p = get_pixel_at(bmp,x,y);
+            if ( mean_RGB(p)>t ) {
+                pixel_put(p,0);
+            } else{
+                pixel_put(p,255);
+            }
 		}
 	}
 }
